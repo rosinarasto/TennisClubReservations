@@ -1,16 +1,18 @@
 package com.tennisclub.reservations.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+
+@Entity
+@Table(name = "Users")
+@EqualsAndHashCode(callSuper = true)
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class User extends BaseEntity {
 
     private String name;
@@ -21,5 +23,6 @@ public class User extends BaseEntity {
 
     private String salt;
 
+    @OneToMany
     private List<Reservation> reservations;
 }

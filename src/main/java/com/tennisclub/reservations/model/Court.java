@@ -1,23 +1,27 @@
 package com.tennisclub.reservations.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Entity
+@Table(name = "Courts")
+@EqualsAndHashCode(callSuper = false)
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Court extends BaseEntity {
 
     private String name;
 
     private int number;
 
+    @OneToMany
     private List<Reservation> reservations;
 
+    @ManyToOne
     private Surface surface;
 }

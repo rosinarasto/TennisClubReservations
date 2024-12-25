@@ -1,9 +1,6 @@
 package com.tennisclub.reservations.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,15 +15,19 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "creation_date", updatable = false)
     private LocalDateTime creationDate;
 
+    @Column(name = "modification_date")
     private LocalDateTime modificationDate;
 
+    @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
         this.modificationDate = LocalDateTime.now();
     }
 
+    @PreUpdate
     protected void onUpdate() {
         this.modificationDate = LocalDateTime.now();
     }

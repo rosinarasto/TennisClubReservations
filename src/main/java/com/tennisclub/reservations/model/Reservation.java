@@ -17,11 +17,14 @@ public class Reservation extends BaseEntity {
     private LocalDate to;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "game_type")
     private GameType gameType;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "court_id")
     private Court court;
 }

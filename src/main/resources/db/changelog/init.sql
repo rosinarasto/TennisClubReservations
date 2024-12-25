@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS "Surfaces"
 (
     `id`                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    `minute_price`      INT NOT NULL,
+    `minute_price`      DOUBLE NOT NULL,
     `name`              VARCHAR(150) NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL

@@ -1,5 +1,6 @@
 package com.tennisclub.reservations.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -16,10 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Surface extends BaseEntity {
 
-    private int minutePrice;
+    @Column(name = "minute_price")
+    private double minutePrice;
 
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "surface")
     private List<Court> courts;
 }

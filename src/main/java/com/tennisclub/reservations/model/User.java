@@ -1,5 +1,6 @@
 package com.tennisclub.reservations.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -17,12 +18,13 @@ public class User extends BaseEntity {
 
     private String name;
 
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     private String password;
 
     private String salt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
 }

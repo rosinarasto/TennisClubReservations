@@ -1,9 +1,6 @@
 package com.tennisclub.reservations.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -19,9 +16,10 @@ public class Court extends BaseEntity {
 
     private int number;
 
-    @OneToMany
+    @OneToMany(mappedBy = "court")
     private List<Reservation> reservations;
 
     @ManyToOne
+    @JoinColumn(name = "surface_id")
     private Surface surface;
 }

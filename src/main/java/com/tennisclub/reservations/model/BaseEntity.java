@@ -21,6 +21,8 @@ public abstract class BaseEntity {
     @Column(name = "modification_date")
     private LocalDateTime modificationDate;
 
+    private boolean deleted = false;
+
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
@@ -30,5 +32,17 @@ public abstract class BaseEntity {
     @PreUpdate
     protected void onUpdate() {
         this.modificationDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleted = true;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }

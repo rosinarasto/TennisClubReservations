@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS "Surfaces"
     `minute_price`      DOUBLE NOT NULL,
     `name`              VARCHAR(150) NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
-    `modification_date` TIMESTAMP NOT NULL
+    `modification_date` TIMESTAMP NOT NULL,
+    `deleted`           BOOL NOT NULL
 );
 
 --
@@ -21,7 +22,8 @@ CREATE TABLE IF NOT EXISTS "Users"
     `password`          VARCHAR(150) NOT NULL,
     `salt`              VARCHAR(150) NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
-    `modification_date` TIMESTAMP NOT NULL
+    `modification_date` TIMESTAMP NOT NULL,
+    `deleted`           BOOL NOT NULL
 );
 
 --
@@ -34,7 +36,8 @@ CREATE TABLE IF NOT EXISTS "Courts"
     `number`            INT NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL,
-    `surface_id`        BIGINT REFERENCES "Surfaces"(`id`)
+    `surface_id`        BIGINT REFERENCES "Surfaces"(`id`),
+    `deleted`           BOOL NOT NULL
 );
 
 --
@@ -49,5 +52,6 @@ CREATE TABLE IF NOT EXISTS "Reservations"
     `to`                TIMESTAMP NOT NULL,
     `user_id`           BIGINT REFERENCES "Users"(`id`),
     `court_id`          BIGINT REFERENCES "Courts"(`id`),
-    `game_type`         ENUM('SINGLES', 'DOUBLES') NOT NULL
+    `game_type`         ENUM('SINGLES', 'DOUBLES') NOT NULL,
+    `deleted`           BOOL NOT NULL
 );

@@ -13,24 +13,17 @@ import java.util.Optional;
 public interface CrudRepository<T extends BaseEntity> {
 
     /**
-     * Find all entities.
-     */
-    List<T> findAll();
-
-    /**
      * Persist given {@code newEntity}.
+     *
+     * @return the persisted entity with generated id.
      */
-    void save(T newEntity);
+    T save(T newEntity);
+
 
     /**
      * Update given {@code entity}.
      */
     void update(T entity);
-
-    /**
-     * Delete entity with given {@code id}.
-     */
-    void deleteById(Long id);
 
     /**
      * Find entity with given {@code id}.
@@ -40,7 +33,17 @@ public interface CrudRepository<T extends BaseEntity> {
     Optional<T> findById(Long id);
 
     /**
-     * Delete all entities.
+     * Find all entities.
      */
-    void deleteAll();
+    List<T> findAll();
+
+    /**
+     * Soft delete entity with given {@code id}.
+     */
+    void softDeleteById(Long id);
+
+    /**
+     * Soft delete all entities.
+     */
+    void softDeleteAll();
 }

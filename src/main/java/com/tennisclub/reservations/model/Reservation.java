@@ -6,10 +6,12 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Reservations")
+@Table(name = "reservations")
 @EqualsAndHashCode(callSuper = false)
-@Data
+@ToString(callSuper = true)
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Reservation extends BaseEntity {
 
     private LocalDate from;

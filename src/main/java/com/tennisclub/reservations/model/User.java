@@ -10,10 +10,12 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 @EqualsAndHashCode(callSuper = true)
-@Data
+@ToString(callSuper = true)
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseEntity {
 
     private String name;

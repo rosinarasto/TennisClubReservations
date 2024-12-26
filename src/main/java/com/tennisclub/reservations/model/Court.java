@@ -6,10 +6,12 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Courts")
+@Table(name = "courts")
 @EqualsAndHashCode(callSuper = false)
-@Data
+@ToString(callSuper = true)
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Court extends BaseEntity {
 
     private String name;
@@ -17,6 +19,7 @@ public class Court extends BaseEntity {
     private int number;
 
     @OneToMany(mappedBy = "court")
+    @OrderBy("creationDate")
     private List<Reservation> reservations;
 
     @ManyToOne

@@ -4,17 +4,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "Surfaces")
+@Table(name = "surfaces")
 @EqualsAndHashCode(callSuper = false)
-@Data
+@ToString(callSuper = true)
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Surface extends BaseEntity {
 
     @Column(name = "minute_price")

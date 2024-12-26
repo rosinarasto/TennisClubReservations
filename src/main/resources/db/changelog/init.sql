@@ -1,7 +1,7 @@
---
--- Surface table definition
---
-CREATE TABLE IF NOT EXISTS "Surfaces"
+--liquibase formatted sql
+
+--changeset admin:init-001
+CREATE TABLE IF NOT EXISTS "surfaces"
 (
     `id`                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     `minute_price`      DOUBLE NOT NULL,
@@ -11,10 +11,8 @@ CREATE TABLE IF NOT EXISTS "Surfaces"
     `deleted`           BOOL NOT NULL
 );
 
---
--- User table definition
---
-CREATE TABLE IF NOT EXISTS "Users"
+--changeset admin:init-002
+CREATE TABLE IF NOT EXISTS "users"
 (
     `id`                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     `name`              VARCHAR(150) NOT NULL,
@@ -26,32 +24,28 @@ CREATE TABLE IF NOT EXISTS "Users"
     `deleted`           BOOL NOT NULL
 );
 
---
--- Court table definition
---
-CREATE TABLE IF NOT EXISTS "Courts"
+--changeset admin:init-003
+CREATE TABLE IF NOT EXISTS "courts"
 (
     `id`                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     `name`              VARCHAR(150) NOT NULL,
     `number`            INT NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL,
-    `surface_id`        BIGINT REFERENCES "Surfaces"(`id`),
+    `surface_id`        BIGINT REFERENCES "surfaces"(`id`),
     `deleted`           BOOL NOT NULL
 );
 
---
--- Reservation table definition
---
-CREATE TABLE IF NOT EXISTS "Reservations"
+--changeset admin:init-004
+CREATE TABLE IF NOT EXISTS "reservations"
 (
     `id`                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL,
     `from`              TIMESTAMP NOT NULL,
     `to`                TIMESTAMP NOT NULL,
-    `user_id`           BIGINT REFERENCES "Users"(`id`),
-    `court_id`          BIGINT REFERENCES "Courts"(`id`),
+    `user_id`           BIGINT REFERENCES "users"(`id`),
+    `court_id`          BIGINT REFERENCES "courts"(`id`),
     `game_type`         ENUM('SINGLES', 'DOUBLES') NOT NULL,
     `deleted`           BOOL NOT NULL
 );

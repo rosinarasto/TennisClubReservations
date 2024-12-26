@@ -3,12 +3,13 @@ package com.tennisclub.reservations.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Getter
-@Setter
+@Getter @Setter
+@ToString
 public abstract class BaseEntity {
 
     @Id
@@ -36,13 +37,5 @@ public abstract class BaseEntity {
 
     public void softDelete() {
         this.deleted = true;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 }

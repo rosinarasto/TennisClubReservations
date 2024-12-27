@@ -22,8 +22,9 @@ public interface CrudRepository<T extends BaseEntity> {
 
     /**
      * Update given {@code entity}.
+     * @return the updated entity.
      */
-    void update(T entity);
+    T update(T entity);
 
     /**
      * Find entity with given {@code id}.

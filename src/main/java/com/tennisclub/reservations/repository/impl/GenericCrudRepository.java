@@ -3,7 +3,7 @@ package com.tennisclub.reservations.repository.impl;
 import com.tennisclub.reservations.model.BaseEntity;
 import com.tennisclub.reservations.repository.CrudRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -43,10 +43,6 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
     public T update(T entity) {
         log.debug("updating entity {}", entity);
 
-        var newEntity = findById(entity.getId());
-        if (newEntity.isEmpty())
-            throw new EntityNotFoundException("Entity not found or is deleted");
-
         return entityManager.merge(entity);
     }
 
@@ -58,12 +54,13 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
         var cq = cb.createQuery(type);
         var root = cq.from(type);
 
-        var idPredicate = cb.equal(root.get("id"), id);
-        var deletedPredicate = cb.equal(root.get("deleted"), false);
+        cq.select(root).where(cb.equal(root.get("id"), id), cb.equal(root.get("deleted"), false));
 
-        cq.select(root).where(idPredicate).where(deletedPredicate);
-
-        return Optional.ofNullable(entityManager.createQuery(cq).getSingleResult());
+        try {
+            return Optional.of(entityManager.createQuery(cq).getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -74,9 +71,7 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
         var cq = cb.createQuery(type);
         var root = cq.from(type);
 
-        var deletedPredicate = cb.equal(root.get("deleted"), false);
-
-        cq.select(root).where(deletedPredicate);
+        cq.select(root).where(cb.equal(root.get("deleted"), false));
 
         return entityManager.createQuery(cq).getResultList();
     }

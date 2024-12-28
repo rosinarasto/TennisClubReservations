@@ -15,17 +15,19 @@ import java.util.Optional;
 public interface CrudService<TDto, TCreateDto, TUpdateDto> {
 
     /**
-     * Persist given {@code newEntity}.
+     * Create given {@code newEntity}.
      *
-     * @return the persisted entity with generated id.
+     * @return the created entity with generated id.
      */
     TDto create(TCreateDto newEntity);
 
 
     /**
      * Update given {@code entity}.
+     *
+     * @return optional with updated entity, or empty optional if entity was not found
      */
-    TDto update(TUpdateDto entity);
+    Optional<TDto> update(TUpdateDto entity);
 
     /**
      * Find entity with given {@code id}.
@@ -41,8 +43,10 @@ public interface CrudService<TDto, TCreateDto, TUpdateDto> {
 
     /**
      * Soft delete entity with given {@code id}.
+     *
+     * @return the deleted entity with id.
      */
-    void softDeleteById(Long id);
+    Optional<TDto> softDeleteById(Long id);
 
     /**
      * Soft delete all entities.

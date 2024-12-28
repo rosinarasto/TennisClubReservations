@@ -4,7 +4,6 @@ import com.tennisclub.reservations.mapper.GenericMapper;
 import com.tennisclub.reservations.model.BaseEntity;
 import com.tennisclub.reservations.repository.CrudRepository;
 import com.tennisclub.reservations.service.CrudService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,16 +39,15 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
     }
 
     @Override
-    public TDto update(TUpdateDto updateEntity) {
+    public Optional<TDto> update(TUpdateDto updateEntity) {
         log.info("Updating entity: {}", updateEntity);
 
-        try {
-            var entity = mapper.toEntityFromUpdateDto(updateEntity);
-            return mapper.toDto(repository.update(entity));
-        } catch (EntityNotFoundException ignored) {
-//          TODO
-            return null;
-        }
+        var entity = mapper.toEntityFromUpdateDto(updateEntity);
+
+        if (findById(entity.getId()).isPresent())
+            return Optional.ofNullable(mapper.toDto(repository.update(entity)));
+
+        return Optional.empty();
     }
 
     @Override
@@ -57,6 +55,7 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
         log.info("Finding entity by id: {}", id);
 
         var entity = repository.findById(id);
+
         return entity.map(mapper::toDto);
     }
 
@@ -70,10 +69,16 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
     }
 
     @Override
-    public void softDeleteById(Long id) {
+    public Optional<TDto> softDeleteById(Long id) {
         log.info("Deleting entity by id: {}", id);
 
+        var entity = findById(id);
+
+        if (entity.isEmpty())
+            return Optional.empty();
+
         repository.softDeleteById(id);
+        return entity;
     }
 
     @Override

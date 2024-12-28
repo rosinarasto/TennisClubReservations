@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "courts")
+@Table(name = "\"courts\"")
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Getter @Setter

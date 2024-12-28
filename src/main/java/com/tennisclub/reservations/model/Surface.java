@@ -6,10 +6,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "surfaces")
+@Table(name = "\"surfaces\"")
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Getter @Setter
@@ -18,7 +19,7 @@ import java.util.List;
 public class Surface extends BaseEntity {
 
     @Column(name = "minute_price")
-    private double minutePrice;
+    private BigDecimal minutePrice;
 
     private String name;
 

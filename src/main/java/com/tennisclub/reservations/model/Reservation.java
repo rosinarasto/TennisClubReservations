@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "reservations")
+@Table(name = "\"reservations\"")
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Getter @Setter

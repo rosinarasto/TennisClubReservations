@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "\"users\"")
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Getter @Setter

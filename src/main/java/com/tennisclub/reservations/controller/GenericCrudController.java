@@ -32,7 +32,7 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
             updateDto.setId(id);
             var response = service.update(updateDto);
 
-            return response.map(dto -> ResponseEntity.ok().body(dto)).orElseGet(() -> ResponseEntity.notFound().build());
+            return response.map(dto -> ResponseEntity.ok().body(dto)).orElseGet(() -> ResponseEntity.badRequest().build());
         } catch (NullPointerException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -41,7 +41,7 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
     @DeleteMapping(ApiUris.DELETE_ALL_URI)
     public ResponseEntity<Void> deleteAllEntities() {
         service.softDeleteAll();
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(ApiUris.DELETE_URI)
@@ -49,10 +49,10 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
         var entity = service.softDeleteById(id);
 
         if (entity.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(ApiUris.GET_ALL_URI)
@@ -63,6 +63,6 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
     @GetMapping(ApiUris.GET_URI)
     public ResponseEntity<TDto> getEntity(@PathVariable long id) {
         var entity = service.findById(id);
-        return entity.map(surfaceDto -> ResponseEntity.ok().body(surfaceDto)).orElseGet(() -> ResponseEntity.notFound().build());
+        return entity.map(surfaceDto -> ResponseEntity.ok().body(surfaceDto)).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }

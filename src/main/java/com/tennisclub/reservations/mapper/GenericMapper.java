@@ -18,7 +18,7 @@ public interface GenericMapper<TModel extends BaseEntity, TDto, TCreateDto, TUpd
      * @param dto the TSaveDto to convert
      * @return the corresponding Entity
      */
-    TModel toEntityFromSaveDto(TCreateDto dto);
+    TModel toEntityFromCreateDto(TCreateDto dto);
 
     /**
      * Converts an TUpdateDto to an Entity.

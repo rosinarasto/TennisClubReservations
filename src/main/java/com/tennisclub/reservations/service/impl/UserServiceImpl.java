@@ -41,7 +41,7 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
     public UserDto create(UserCreateDto newUser) {
         log.info("Creating new User: {}", newUser);
 
-        var user = userMapper.toEntityFromSaveDto(newUser);
+        var user = userMapper.toEntityFromCreateDto(newUser);
         var salt = PasswordUtil.generateSalt();
         user.setSalt(salt);
         user.setPassword(PasswordUtil.hashPassword(user.getPassword(), salt));

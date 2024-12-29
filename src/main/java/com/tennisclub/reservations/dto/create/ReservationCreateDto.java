@@ -1,8 +1,6 @@
 package com.tennisclub.reservations.dto.create;
 
-import com.tennisclub.reservations.dto.BaseDto;
 import com.tennisclub.reservations.dto.CourtDto;
-import com.tennisclub.reservations.dto.UserDto;
 import com.tennisclub.reservations.model.GameType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +24,7 @@ public class ReservationCreateDto {
     private GameType gameType;
 
     @NonNull
-    private UserDto user;
+    private UserCreateDto user;
 
     @NonNull
     private CourtDto court;

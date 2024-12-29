@@ -33,7 +33,7 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
     public TDto create(TCreateDto newEntity) {
         log.info("Creating new entity: {}", newEntity);
 
-        var entity = mapper.toEntityFromSaveDto(newEntity);
+        var entity = mapper.toEntityFromCreateDto(newEntity);
         var savedEntity = repository.save(entity);
         return mapper.toDto(savedEntity);
     }

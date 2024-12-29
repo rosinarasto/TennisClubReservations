@@ -18,6 +18,8 @@
 		<java.version>17</java.version>
 		<spring-boot.version>3.4.1</spring-boot.version>
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
+		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
 	</properties>
 
 	<dependencies>
@@ -38,7 +40,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
-			<optional>true</optional>
+<!--			<optional>true</optional>-->
 		</dependency>
 
 		<dependency>
@@ -62,7 +64,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.30</version>
-			<optional>true</optional>
+<!--			<optional>true</optional>-->
 			<scope>provided</scope>
 		</dependency>
 
@@ -101,7 +103,7 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>1.18.30</version>
-							<optional>true</optional>
+<!--							<optional>true</optional>-->
 						</path>
 						<path>
 							<groupId>org.projectlombok</groupId>
@@ -119,8 +121,8 @@
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.30</version>
-							<optional>true</optional>
+<!--							<version>1.18.30</version>-->
+<!--							<optional>true</optional>-->
 						</exclude>
 					</excludes>
 				</configuration>

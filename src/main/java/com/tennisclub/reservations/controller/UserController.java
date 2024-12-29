@@ -7,10 +7,7 @@ import com.tennisclub.reservations.dto.create.UserCreateDto;
 import com.tennisclub.reservations.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,9 +24,9 @@ public class UserController extends GenericCrudController<UserDto, UserCreateDto
     }
 
     @GetMapping(ApiUris.USER_RESERVATIONS_URI)
-    public ResponseEntity<List<ReservationDto>> getUserReservations(@PathVariable String phoneNumber) {
+    public ResponseEntity<List<ReservationDto>> getUserReservations(@PathVariable String phoneNumber, @RequestParam(required = false) boolean future) {
         try {
-            var reservations = userService.findReservations(phoneNumber);
+            var reservations = userService.findReservations(phoneNumber, future);
             return ResponseEntity.ok().body(reservations);
         } catch (NullPointerException e) {
             return ResponseEntity.notFound().build();

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,13 +63,14 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
     }
 
     @Override
-    public List<ReservationDto> findReservations(String phoneNumber) {
+    public List<ReservationDto> findReservations(String phoneNumber, boolean future) {
         var user = userRepository.findByPhoneNumber(phoneNumber);
 
         return user.map(value ->
                         value.getReservations().stream()
                             .map(reservationMapper::toDto)
-                            .toList())
+                                .filter(res -> future && res.getFrom().isAfter(LocalDate.now()))
+                                .toList())
                     .orElse(Collections.emptyList());
     }
 }

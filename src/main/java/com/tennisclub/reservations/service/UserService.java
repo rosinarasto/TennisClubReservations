@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UserService extends CrudService<UserDto, UserCreateDto, UserDto> {
 
-    List<ReservationDto> findReservations(String phoneNumber);
+    List<ReservationDto> findReservations(String phoneNumber, boolean future);
 }

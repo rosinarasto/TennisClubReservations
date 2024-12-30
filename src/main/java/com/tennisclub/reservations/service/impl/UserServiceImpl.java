@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -28,8 +27,8 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
 
     private final UserRepository userRepository;
 
-    private final ReservationMapper reservationMapper;
     private final UserMapper userMapper;
+    private final ReservationMapper reservationMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository repository, UserMapper mapper, ReservationMapper reservationMapper) {

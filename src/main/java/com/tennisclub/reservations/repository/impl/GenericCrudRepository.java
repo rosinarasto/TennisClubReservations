@@ -31,7 +31,7 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
     @Override
     @Transactional
     public T save(T newEntity) {
-        log.debug("saving entity {}", newEntity);
+        log.info("saving entity {}", newEntity);
 
         if (newEntity.getId() == null) {
             entityManager.persist(newEntity);
@@ -44,14 +44,14 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
     @Override
     @Transactional
     public T update(T entity) {
-        log.debug("updating entity {}", entity);
+        log.info("updating entity {}", entity);
 
         return entityManager.merge(entity);
     }
 
     @Override
     public Optional<T> findById(Long id) {
-        log.debug("finding entity with id {}", id);
+        log.info("finding entity with id {}", id);
 
         var cb = entityManager.getCriteriaBuilder();
         var cq = cb.createQuery(type);
@@ -68,7 +68,7 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
 
     @Override
     public Page<T> findAll(Pageable pageable) {
-        log.debug("finding all entities for pageable");
+        log.info("finding all entities for pageable");
 
         var q = entityManager.createQuery(getNotDeleted());
 
@@ -81,7 +81,7 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
     @Override
     @Transactional
     public void softDeleteById(Long id) {
-        log.debug("deleting entity with id {}", id);
+        log.info("deleting entity with id {}", id);
 
         var entity = findById(id);
         if (entity.isPresent()) {
@@ -94,7 +94,7 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
     @Override
     @Transactional
     public void softDeleteAll(Pageable pageable) {
-        log.debug("deleting all entities for pageable");
+        log.info("deleting all entities for pageable");
 
         var q = entityManager.createQuery(getNotDeleted());
         q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());

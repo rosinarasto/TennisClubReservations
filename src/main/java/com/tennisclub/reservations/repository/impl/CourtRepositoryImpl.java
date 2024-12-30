@@ -1,7 +1,6 @@
 package com.tennisclub.reservations.repository.impl;
 
 import com.tennisclub.reservations.model.Court;
-import com.tennisclub.reservations.model.Reservation;
 import com.tennisclub.reservations.repository.CourtRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -24,7 +23,7 @@ public class CourtRepositoryImpl extends GenericCrudRepository<Court> implements
 
     @Override
     public Optional<Court> findByCourtNumber(int number) {
-        log.debug("find court by its number");
+        log.info("find court by its number");
 
         var cb = em.getCriteriaBuilder();
         var cq = cb.createQuery(Court.class);

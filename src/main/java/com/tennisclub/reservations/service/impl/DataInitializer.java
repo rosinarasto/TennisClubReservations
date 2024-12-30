@@ -9,6 +9,7 @@ import com.tennisclub.reservations.service.CourtService;
 import com.tennisclub.reservations.service.SurfaceService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @Transactional
 public class DataInitializer {
 
@@ -45,6 +47,8 @@ public class DataInitializer {
     public void initData() {
         if (!dataInitEnabled)
             return;
+
+        log.info("Data initialization started");
 
         initSurfaces();
         initCourts();

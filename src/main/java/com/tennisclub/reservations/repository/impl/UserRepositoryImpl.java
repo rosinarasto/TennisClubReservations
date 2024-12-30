@@ -23,7 +23,7 @@ public class UserRepositoryImpl extends GenericCrudRepository<User> implements U
 
     @Override
     public Optional<User> findByPhoneNumber(String phoneNumber) {
-        log.debug("find user by phone number");
+        log.info("find user by phone number");
 
         var cb = em.getCriteriaBuilder();
         var cq = cb.createQuery(User.class);
@@ -40,7 +40,7 @@ public class UserRepositoryImpl extends GenericCrudRepository<User> implements U
 
     @Override
     public Optional<User> findByName(String name) {
-        log.debug("find user by phone name");
+        log.info("find user by phone name");
 
         var cb = em.getCriteriaBuilder();
         var cq = cb.createQuery(User.class);

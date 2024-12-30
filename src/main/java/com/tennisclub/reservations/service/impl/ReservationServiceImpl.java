@@ -4,8 +4,8 @@ import com.tennisclub.reservations.dto.ReservationDto;
 import com.tennisclub.reservations.dto.create.ReservationCreateDto;
 import com.tennisclub.reservations.mapper.ReservationMapper;
 import com.tennisclub.reservations.mapper.UserMapper;
+import com.tennisclub.reservations.model.Court;
 import com.tennisclub.reservations.model.Reservation;
-import com.tennisclub.reservations.repository.CourtRepository;
 import com.tennisclub.reservations.repository.ReservationRepository;
 import com.tennisclub.reservations.repository.UserRepository;
 import com.tennisclub.reservations.service.ReservationService;
@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -26,20 +27,18 @@ public class ReservationServiceImpl extends GenericCrudService<Reservation, Rese
 
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
-    private final CourtRepository courtRepository;
 
-    private final ReservationMapper reservationMapper;
     private final UserMapper userMapper;
+    private final ReservationMapper reservationMapper;
 
     @Autowired
     public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper mapper,
                                   UserRepository userRepository, UserService userService,
-                                  UserMapper userMapper, CourtRepository courtRepository) {
+                                  UserMapper userMapper) {
         super(reservationRepository, mapper, ReservationDto.class, Reservation.class);
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.userService = userService;
-        this.courtRepository = courtRepository;
         this.reservationMapper = mapper;
         this.userMapper = userMapper;
     }
@@ -47,10 +46,6 @@ public class ReservationServiceImpl extends GenericCrudService<Reservation, Rese
     @Override
     public ReservationDto create(ReservationCreateDto createDto) {
         log.info("Creating new reservation {}", createDto);
-
-        if (!validReservationDate(createDto)) {
-            throw new IllegalArgumentException("Invalid reservation date");
-        }
 
         var user = userRepository.findByPhoneNumber(createDto.getUser().getPhoneNumber());
 
@@ -67,14 +62,13 @@ public class ReservationServiceImpl extends GenericCrudService<Reservation, Rese
         return reservationMapper.toDto(reservation);
     }
 
-    private boolean validReservationDate(ReservationCreateDto createDto) {
-        var court = courtRepository.findById(createDto.getCourt().getId());
+    public boolean isDateAvailable(Court court, LocalDateTime from, LocalDateTime to) {
+        log.info("isDateAvailable for court {} from {} to {}", court, from, to);
 
-        return court.map(value -> value.getReservations().stream()
-                .anyMatch(res -> (createDto.getFrom().isAfter(res.getFrom()) &&
-                                  createDto.getFrom().isBefore(res.getTo())) ||
-                                 (createDto.getTo().isBefore(res.getTo()) &&
-                                  createDto.getTo().isAfter(res.getFrom()))))
-                .orElse(false);
+        return court.getReservations().stream()
+                .anyMatch(res -> (from.isAfter(res.getFrom()) &&
+                                  from.isBefore(res.getTo())) ||
+                                 (to.isBefore(res.getTo()) &&
+                                  to.isAfter(res.getFrom())));
     }
 }

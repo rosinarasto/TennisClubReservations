@@ -5,6 +5,7 @@ import com.tennisclub.reservations.dto.ReservationDto;
 import com.tennisclub.reservations.dto.create.ReservationCreateDto;
 import com.tennisclub.reservations.service.ReservationService;
 import com.tennisclub.reservations.util.PriceCalculationUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ReservationController extends GenericCrudController<ReservationDto,
     }
 
     @Override
-    public ResponseEntity<BigDecimal> createEntity(ReservationCreateDto reservationCreateDto) {
+    public ResponseEntity<BigDecimal> createEntity(@Valid @RequestBody ReservationCreateDto reservationCreateDto) {
         var reservation = reservationService.create(reservationCreateDto);
         var price = PriceCalculationUtil.calculatePrice(reservation);
         return ResponseEntity.ok().body(price);

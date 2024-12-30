@@ -1,10 +1,12 @@
 package com.tennisclub.reservations.dto;
 
 import com.tennisclub.reservations.model.GameType;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDateTime;
 
@@ -13,18 +15,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReservationDto extends BaseDto {
 
-    @NonNull
+    @FutureOrPresent
+    @NotNull
     private LocalDateTime from;
 
-    @NonNull
+    @Future
+    @NotNull
     private LocalDateTime to;
 
-    @NonNull
+    @NotNull
     private GameType gameType;
 
-    @NonNull
+    @NotNull
     private UserDto user;
 
-    @NonNull
+    @NotNull
     private CourtDto court;
 }

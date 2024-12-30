@@ -1,22 +1,22 @@
 package com.tennisclub.reservations.dto.create;
 
 import com.tennisclub.reservations.dto.SurfaceDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourtCreateDto {
 
-    @NonNull
+    @NotNull
     private String name;
 
-    @NonNull
+    @NotNull
     private Integer number;
 
-    @NonNull
+    @NotNull
     private SurfaceDto surface;
 }

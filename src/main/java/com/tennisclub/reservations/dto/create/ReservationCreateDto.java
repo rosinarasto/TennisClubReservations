@@ -2,30 +2,36 @@ package com.tennisclub.reservations.dto.create;
 
 import com.tennisclub.reservations.dto.CourtDto;
 import com.tennisclub.reservations.model.GameType;
+import com.tennisclub.reservations.validator.AvailableDate;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@AvailableDate
 public class ReservationCreateDto {
 
-    @NonNull
+    @FutureOrPresent
+    @NotNull
     private LocalDateTime from;
 
-    @NonNull
+    @Future
+    @NotNull
     private LocalDateTime to;
 
-    @NonNull
+    @NotNull
     private GameType gameType;
 
-    @NonNull
+    @NotNull
     private UserCreateDto user;
 
-    @NonNull
+    @NotNull
     private CourtDto court;
 }

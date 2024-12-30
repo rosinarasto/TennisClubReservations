@@ -1,9 +1,9 @@
 package com.tennisclub.reservations.dto.create;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.math.BigDecimal;
 
@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class SurfaceCreateDto {
 
-    @NonNull
+    @NotNull
     private BigDecimal minutePrice;
 
-    @NonNull
+    @NotNull
     private String name;
 }

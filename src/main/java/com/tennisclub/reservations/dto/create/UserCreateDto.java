@@ -1,21 +1,23 @@
 package com.tennisclub.reservations.dto.create;
 
+import com.tennisclub.reservations.validator.PhoneNumber;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCreateDto {
 
-    @NonNull
+    @NotNull
     private String name;
 
-    @NonNull
+    @PhoneNumber
+    @NotNull
     private String phoneNumber;
 
-    @NonNull
+    @NotNull
     private String password;
 }

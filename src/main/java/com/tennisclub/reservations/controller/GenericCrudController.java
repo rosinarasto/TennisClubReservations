@@ -3,6 +3,7 @@ package com.tennisclub.reservations.controller;
 import com.tennisclub.reservations.config.ApiUris;
 import com.tennisclub.reservations.dto.BaseDto;
 import com.tennisclub.reservations.service.CrudService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,13 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
     }
 
     @PostMapping(ApiUris.CREATE_URI)
-    public ResponseEntity<?> createEntity(@RequestBody TCreateDto createDto) {
+    public ResponseEntity<?> createEntity(@Valid @RequestBody TCreateDto createDto) {
         var response = service.create(createDto);
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping(ApiUris.UPDATE_URI)
-    public ResponseEntity<TDto> updateEntity(@RequestBody TUpdateDto updateDto, @PathVariable long id) {
-        updateDto.setId(id);
+    public ResponseEntity<TDto> updateEntity(@Valid @RequestBody TUpdateDto updateDto) {
         var response = service.update(updateDto);
         return response.map(dto -> ResponseEntity.ok().body(dto)).orElseGet(() -> ResponseEntity.badRequest().build());
     }

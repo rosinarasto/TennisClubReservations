@@ -2,6 +2,7 @@ package com.tennisclub.reservations.service.impl;
 
 import com.tennisclub.reservations.dto.SurfaceDto;
 import com.tennisclub.reservations.dto.create.SurfaceCreateDto;
+import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import com.tennisclub.reservations.mapper.SurfaceMapper;
 import com.tennisclub.reservations.model.Surface;
 import com.tennisclub.reservations.repository.SurfaceRepository;
@@ -34,8 +35,7 @@ public class SurfaceServiceImpl extends GenericCrudService<Surface, SurfaceDto, 
         var surface = surfaceRepository.findByName(newEntity.getName());
 
         if (surface.isPresent()) {
-            log.info("Surface already exists");
-            return surfaceMapper.toDto(surface.get());
+            throw new ResourceAlreadyExistsException("surface with given name already exists");
         }
 
         var entity = surfaceMapper.toEntityFromCreateDto(newEntity);

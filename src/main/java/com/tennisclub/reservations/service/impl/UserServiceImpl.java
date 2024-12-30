@@ -3,6 +3,7 @@ package com.tennisclub.reservations.service.impl;
 import com.tennisclub.reservations.dto.ReservationDto;
 import com.tennisclub.reservations.dto.UserDto;
 import com.tennisclub.reservations.dto.create.UserCreateDto;
+import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import com.tennisclub.reservations.mapper.ReservationMapper;
 import com.tennisclub.reservations.mapper.UserMapper;
 import com.tennisclub.reservations.model.User;
@@ -45,15 +46,13 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
         var userByPhoneNumber = userRepository.findByPhoneNumber(newUser.getPhoneNumber());
 
         if (userByPhoneNumber.isPresent()) {
-            log.info("User already exists");
-            return userMapper.toDto(userByPhoneNumber.get());
+            throw new ResourceAlreadyExistsException("user with given phone number already exists");
         }
 
         var userByName = userRepository.findByName(newUser.getName());
 
         if (userByName.isPresent()) {
-            log.info("User already exists");
-            return userMapper.toDto(userByName.get());
+            throw new ResourceAlreadyExistsException("user with given name already exists");
         }
 
         var user = userMapper.toEntityFromCreateDto(newUser);

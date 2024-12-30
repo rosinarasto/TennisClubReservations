@@ -2,6 +2,7 @@ package com.tennisclub.reservations.controller;
 
 import com.tennisclub.reservations.config.ApiUris;
 import com.tennisclub.reservations.dto.BaseDto;
+import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import com.tennisclub.reservations.service.CrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
             var response = service.update(updateDto);
 
             return response.map(dto -> ResponseEntity.ok().body(dto)).orElseGet(() -> ResponseEntity.badRequest().build());
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | ResourceAlreadyExistsException e) {
             return ResponseEntity.badRequest().build();
         }
     }

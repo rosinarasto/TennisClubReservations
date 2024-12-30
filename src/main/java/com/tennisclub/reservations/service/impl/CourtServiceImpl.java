@@ -3,6 +3,7 @@ package com.tennisclub.reservations.service.impl;
 import com.tennisclub.reservations.dto.CourtDto;
 import com.tennisclub.reservations.dto.ReservationDto;
 import com.tennisclub.reservations.dto.create.CourtCreateDto;
+import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import com.tennisclub.reservations.mapper.CourtMapper;
 import com.tennisclub.reservations.mapper.ReservationMapper;
 import com.tennisclub.reservations.model.Court;
@@ -11,6 +12,7 @@ import com.tennisclub.reservations.service.CourtService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -41,8 +43,7 @@ public class CourtServiceImpl extends GenericCrudService<Court, CourtDto, CourtC
         var court = courtRepository.findByCourtNumber(newEntity.getNumber());
 
         if (court.isPresent()) {
-            log.info("Court already exists");
-            return courtMapper.toDto(court.get());
+            throw new ResourceAlreadyExistsException("Court with number already exists");
         }
 
         var entity = courtMapper.toEntityFromCreateDto(newEntity);

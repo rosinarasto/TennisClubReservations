@@ -3,6 +3,7 @@ package com.tennisclub.reservations.service.impl;
 import com.tennisclub.reservations.dto.SurfaceDto;
 import com.tennisclub.reservations.dto.create.CourtCreateDto;
 import com.tennisclub.reservations.dto.create.SurfaceCreateDto;
+import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import com.tennisclub.reservations.service.CourtService;
 import com.tennisclub.reservations.service.SurfaceService;
 import jakarta.annotation.PostConstruct;
@@ -43,14 +44,26 @@ public class DataInitializer {
     }
 
     private void initSurfaces() {
-        surfaces.add(surfaceService.create(new SurfaceCreateDto(BigDecimal.valueOf(0.24), "Hard")));
-        surfaces.add(surfaceService.create(new SurfaceCreateDto(BigDecimal.valueOf(0.36), "Clay")));
+        try {
+            surfaces.add(surfaceService.create(new SurfaceCreateDto(BigDecimal.valueOf(0.24), "Hard")));
+        } catch (ResourceAlreadyExistsException ignored) {}
+        try {
+            surfaces.add(surfaceService.create(new SurfaceCreateDto(BigDecimal.valueOf(0.36), "Clay")));
+        } catch (ResourceAlreadyExistsException ignored) {}
     }
 
     private void initCourts() {
-        courtService.create(new CourtCreateDto("Emerald Bay Tennis Center", 1, surfaces.get(0)));
-        courtService.create(new CourtCreateDto("Riverside Racket Club", 2, surfaces.get(1)));
-        courtService.create(new CourtCreateDto("Sunset Point Tennis Courts", 3, surfaces.get(1)));
-        courtService.create(new CourtCreateDto("Grandview Athletic Park", 4, surfaces.get(0)));
+        try {
+            courtService.create(new CourtCreateDto("Emerald Bay Tennis Center", 1, surfaces.get(0)));
+        } catch (ResourceAlreadyExistsException ignored) {}
+        try {
+            courtService.create(new CourtCreateDto("Riverside Racket Club", 2, surfaces.get(1)));
+        } catch (ResourceAlreadyExistsException ignored) {}
+        try {
+            courtService.create(new CourtCreateDto("Sunset Point Tennis Courts", 3, surfaces.get(1)));
+        } catch (ResourceAlreadyExistsException ignored) {}
+        try {
+            courtService.create(new CourtCreateDto("Grandview Athletic Park", 4, surfaces.get(0)));
+        } catch (ResourceAlreadyExistsException ignored) {}
     }
 }

@@ -88,9 +88,4 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
                                 .toList())
                     .orElse(Collections.emptyList());
     }
-
-    @Override
-    public User findByName(String name) {
-        return userRepository.findByName(name).orElse(null);
-    }
 }

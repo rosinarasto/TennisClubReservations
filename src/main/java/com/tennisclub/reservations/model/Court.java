@@ -16,6 +16,7 @@ public class Court extends BaseEntity {
 
     private String name;
 
+    @Column(unique = true, nullable = false)
     private int number;
 
     @OneToMany(mappedBy = "court")

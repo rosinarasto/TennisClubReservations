@@ -37,4 +37,21 @@ public class UserRepositoryImpl extends GenericCrudRepository<User> implements U
             return Optional.empty();
         }
     }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        log.debug("find user by phone name");
+
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(User.class);
+        var root = cq.from(User.class);
+
+        cq.select(root).where(cb.equal(root.get("name"), name), cb.equal(root.get("deleted"), false));
+
+        try {
+            return Optional.of(em.createQuery(cq).getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 }

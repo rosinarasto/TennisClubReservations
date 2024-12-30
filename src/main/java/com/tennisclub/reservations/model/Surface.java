@@ -21,6 +21,7 @@ public class Surface extends BaseEntity {
     @Column(name = "minute_price")
     private BigDecimal minutePrice;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "surface")

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -14,10 +14,10 @@ import java.time.LocalDate;
 public class ReservationDto extends BaseDto {
 
     @NonNull
-    private LocalDate from;
+    private LocalDateTime from;
 
     @NonNull
-    private LocalDate to;
+    private LocalDateTime to;
 
     @NonNull
     private GameType gameType;

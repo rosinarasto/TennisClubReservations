@@ -3,7 +3,7 @@ package com.tennisclub.reservations.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "\"reservations\"")
@@ -14,9 +14,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Reservation extends BaseEntity {
 
-    private LocalDate from;
+    private LocalDateTime from;
 
-    private LocalDate to;
+    private LocalDateTime to;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "game_type")

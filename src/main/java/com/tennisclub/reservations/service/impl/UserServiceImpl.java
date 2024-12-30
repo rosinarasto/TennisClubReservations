@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,20 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
     @Override
     public UserDto create(UserCreateDto newUser) {
         log.info("Creating new User: {}", newUser);
+
+        var userByPhoneNumber = userRepository.findByPhoneNumber(newUser.getPhoneNumber());
+
+        if (userByPhoneNumber.isPresent()) {
+            log.info("User already exists");
+            return userMapper.toDto(userByPhoneNumber.get());
+        }
+
+        var userByName = userRepository.findByName(newUser.getName());
+
+        if (userByName.isPresent()) {
+            log.info("User already exists");
+            return userMapper.toDto(userByName.get());
+        }
 
         var user = userMapper.toEntityFromCreateDto(newUser);
         var salt = PasswordUtil.generateSalt();
@@ -69,7 +84,7 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
         return user.map(value ->
                         value.getReservations().stream()
                             .map(reservationMapper::toDto)
-                                .filter(res -> future && res.getFrom().isAfter(LocalDate.now()))
+                                .filter(res -> future && res.getFrom().isAfter(LocalDateTime.now()))
                                 .toList())
                     .orElse(Collections.emptyList());
     }

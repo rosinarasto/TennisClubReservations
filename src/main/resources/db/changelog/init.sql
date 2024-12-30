@@ -4,11 +4,13 @@
 CREATE TABLE IF NOT EXISTS "surfaces"
 (
     `id`                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    `minute_price`      DOUBLE NOT NULL,
+    `minute_price`      DECIMAL(10, 2) NOT NULL,
     `name`              VARCHAR(150) NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL,
-    `deleted`           BOOL NOT NULL
+    `deleted`           BOOL NOT NULL,
+    UNIQUE (`name`)
+
 );
 
 --changeset admin:init-002
@@ -21,7 +23,9 @@ CREATE TABLE IF NOT EXISTS "users"
     `salt`              VARCHAR(150) NOT NULL,
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL,
-    `deleted`           BOOL NOT NULL
+    `deleted`           BOOL NOT NULL,
+    UNIQUE (`phone_number`),
+    UNIQUE (`name`)
 );
 
 --changeset admin:init-003
@@ -33,7 +37,8 @@ CREATE TABLE IF NOT EXISTS "courts"
     `creation_date`     TIMESTAMP NOT NULL,
     `modification_date` TIMESTAMP NOT NULL,
     `surface_id`        BIGINT REFERENCES "surfaces"(`id`),
-    `deleted`           BOOL NOT NULL
+    `deleted`           BOOL NOT NULL,
+    UNIQUE (`number`)
 );
 
 --changeset admin:init-004

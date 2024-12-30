@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "\"users\"")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 @Getter @Setter
 @NoArgsConstructor

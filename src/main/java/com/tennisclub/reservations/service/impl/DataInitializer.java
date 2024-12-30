@@ -52,6 +52,8 @@ public class DataInitializer {
 
         initSurfaces();
         initCourts();
+
+        log.info("Data initialization finished");
     }
 
     private void initSurfaces() {

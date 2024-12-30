@@ -4,7 +4,7 @@ public abstract class ApiUris {
     public static final String BASE_URI               = "/api";
 
     public static final String CREATE_URI             = "/create";
-    public static final String UPDATE_URI             = "/update/{id}";
+    public static final String UPDATE_URI             = "/update";
     public static final String DELETE_ALL_URI         = "/delete";
     public static final String DELETE_URI             = "/delete/{id}";
     public static final String GET_ALL_URI            = "/get";

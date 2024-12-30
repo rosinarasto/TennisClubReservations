@@ -9,10 +9,10 @@ import com.tennisclub.reservations.mapper.UserMapper;
 import com.tennisclub.reservations.model.User;
 import com.tennisclub.reservations.repository.UserRepository;
 import com.tennisclub.reservations.service.UserService;
-import com.tennisclub.reservations.util.PasswordUtil;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,12 +30,16 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
     private final UserMapper userMapper;
     private final ReservationMapper reservationMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServiceImpl(UserRepository repository, UserMapper mapper, ReservationMapper reservationMapper) {
+    public UserServiceImpl(UserRepository repository, UserMapper mapper,
+                           ReservationMapper reservationMapper, PasswordEncoder passwordEncoder) {
         super(repository, mapper, UserDto.class, User.class);
         this.userRepository = repository;
         this.userMapper = mapper;
         this.reservationMapper = reservationMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -55,9 +59,7 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
         }
 
         var user = userMapper.toEntityFromCreateDto(newUser);
-        var salt = PasswordUtil.generateSalt();
-        user.setSalt(salt);
-        user.setPassword(PasswordUtil.hashPassword(user.getPassword(), salt));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userMapper.toDto(userRepository.save(user));
     }
@@ -67,7 +69,7 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
         log.info("Updating User: {}", updateUser);
 
         var user = userMapper.toEntityFromUpdateDto(updateUser);
-        user.setPassword(PasswordUtil.hashPassword(user.getPassword(), user.getSalt()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (findById(user.getId()).isPresent())
             return Optional.ofNullable(userMapper.toDto(userRepository.update(user)));
@@ -85,5 +87,10 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
                                 .filter(res -> future && res.getFrom().isAfter(LocalDateTime.now()))
                                 .toList())
                     .orElse(Collections.emptyList());
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findByName(name).orElse(null);
     }
 }

@@ -29,7 +29,7 @@ public class ReservationController extends GenericCrudController<ReservationDto,
             var reservation = reservationService.create(reservationCreateDto);
             var price = PriceCalculationUtil.calculatePrice(reservation);
             return ResponseEntity.ok().body(price);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             return ResponseEntity.badRequest().build();
         }
     }

@@ -17,7 +17,7 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
     }
 
     @PostMapping(ApiUris.CREATE_URI)
-    public ResponseEntity<TDto> createEntity(@RequestBody TCreateDto createDto) {
+    public ResponseEntity<?> createEntity(@RequestBody TCreateDto createDto) {
         try {
             var response = service.create(createDto);
             return ResponseEntity.ok().body(response);

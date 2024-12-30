@@ -3,10 +3,10 @@ package com.tennisclub.reservations.controller;
 import com.tennisclub.reservations.config.ApiUris;
 import com.tennisclub.reservations.dto.BaseDto;
 import com.tennisclub.reservations.service.CrudService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends BaseDto> {
 
@@ -39,8 +39,8 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
     }
 
     @DeleteMapping(ApiUris.DELETE_ALL_URI)
-    public ResponseEntity<Void> deleteAllEntities() {
-        service.softDeleteAll();
+    public ResponseEntity<Void> deleteAllEntities(Pageable pageable) {
+        service.softDeleteAll(pageable);
         return ResponseEntity.ok().build();
     }
 
@@ -56,8 +56,8 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
     }
 
     @GetMapping(ApiUris.GET_ALL_URI)
-    public ResponseEntity<List<TDto>> getAllEntities() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<Page<TDto>> getAllEntities(Pageable pageable) {
+        return ResponseEntity.ok().body(service.findAll(pageable));
     }
 
     @GetMapping(ApiUris.GET_URI)

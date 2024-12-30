@@ -1,8 +1,8 @@
 package com.tennisclub.reservations.service;
 
-import com.tennisclub.reservations.model.BaseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,7 +39,7 @@ public interface CrudService<TDto, TCreateDto, TUpdateDto> {
     /**
      * Find all entities.
      */
-    List<TDto> findAll();
+    Page<TDto> findAll(Pageable pageable);
 
     /**
      * Soft delete entity with given {@code id}.
@@ -51,5 +51,5 @@ public interface CrudService<TDto, TCreateDto, TUpdateDto> {
     /**
      * Soft delete all entities.
      */
-    void softDeleteAll();
+    void softDeleteAll(Pageable pageable);
 }

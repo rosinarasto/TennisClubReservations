@@ -1,6 +1,8 @@
 package com.tennisclub.reservations.repository;
 
 import com.tennisclub.reservations.model.BaseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +37,9 @@ public interface CrudRepository<T extends BaseEntity> {
     Optional<T> findById(Long id);
 
     /**
-     * Find all entities.
+     * Find all entities for pageable.
      */
-    List<T> findAll();
+    Page<T> findAll(Pageable pageable);
 
     /**
      * Soft delete entity with given {@code id}.
@@ -45,7 +47,7 @@ public interface CrudRepository<T extends BaseEntity> {
     void softDeleteById(Long id);
 
     /**
-     * Soft delete all entities.
+     * Soft delete all entities from pageable.
      */
-    void softDeleteAll();
+    void softDeleteAll(Pageable pageable);
 }

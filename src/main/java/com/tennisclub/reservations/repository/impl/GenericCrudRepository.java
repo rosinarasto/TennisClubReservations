@@ -5,11 +5,14 @@ import com.tennisclub.reservations.repository.CrudRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import java.util.List;
 import java.util.Optional;
 
 @NoRepositoryBean
@@ -64,16 +67,15 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
     }
 
     @Override
-    public List<T> findAll() {
-        log.debug("finding all entities");
+    public Page<T> findAll(Pageable pageable) {
+        log.debug("finding all entities for pageable");
 
-        var cb = entityManager.getCriteriaBuilder();
-        var cq = cb.createQuery(type);
-        var root = cq.from(type);
+        var q = entityManager.createQuery(getNotDeleted());
 
-        cq.select(root).where(cb.equal(root.get("deleted"), false));
+        q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+        q.setMaxResults(pageable.getPageSize());
 
-        return entityManager.createQuery(cq).getResultList();
+        return new PageImpl<>(q.getResultList());
     }
 
     @Override
@@ -91,15 +93,27 @@ public abstract class GenericCrudRepository<T extends BaseEntity> implements Cru
 
     @Override
     @Transactional
-    public void softDeleteAll() {
-        log.debug("deleting all entities");
+    public void softDeleteAll(Pageable pageable) {
+        log.debug("deleting all entities for pageable");
 
-        var entities = findAll();
+        var q = entityManager.createQuery(getNotDeleted());
+        q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+        q.setMaxResults(pageable.getPageSize());
+
+        var entities = q.getResultList();
 
         for (var entity : entities) {
             entity.softDelete();
             save(entity);
         }
 
+    }
+
+    private CriteriaQuery<T> getNotDeleted() {
+        var cb = entityManager.getCriteriaBuilder();
+        var cq = cb.createQuery(type);
+        var root = cq.from(type);
+
+        return cq.where(cb.equal(root.get("deleted"), false));
     }
 }

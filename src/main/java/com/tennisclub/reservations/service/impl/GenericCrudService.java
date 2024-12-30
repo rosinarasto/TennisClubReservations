@@ -6,6 +6,8 @@ import com.tennisclub.reservations.repository.CrudRepository;
 import com.tennisclub.reservations.service.CrudService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,12 +62,10 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
     }
 
     @Override
-    public List<TDto> findAll() {
+    public Page<TDto> findAll(Pageable pageable) {
         log.info("Finding all entities");
 
-        return repository.findAll().stream()
-                .map(mapper::toDto)
-                .toList();
+        return repository.findAll(pageable).map(mapper::toDto);
     }
 
     @Override
@@ -82,9 +82,9 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
     }
 
     @Override
-    public void softDeleteAll() {
-        log.info("Deleting all entities");
+    public void softDeleteAll(Pageable pageable) {
+        log.info("Deleting all entities from pageable");
 
-        repository.softDeleteAll();
+        repository.softDeleteAll(pageable);
     }
 }

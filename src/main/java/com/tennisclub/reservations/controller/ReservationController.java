@@ -25,12 +25,8 @@ public class ReservationController extends GenericCrudController<ReservationDto,
 
     @Override
     public ResponseEntity<BigDecimal> createEntity(ReservationCreateDto reservationCreateDto) {
-        try {
-            var reservation = reservationService.create(reservationCreateDto);
-            var price = PriceCalculationUtil.calculatePrice(reservation);
-            return ResponseEntity.ok().body(price);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        var reservation = reservationService.create(reservationCreateDto);
+        var price = PriceCalculationUtil.calculatePrice(reservation);
+        return ResponseEntity.ok().body(price);
     }
 }

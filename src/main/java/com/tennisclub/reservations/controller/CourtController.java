@@ -28,11 +28,7 @@ public class CourtController extends GenericCrudController<CourtDto, CourtCreate
 
     @GetMapping(ApiUris.COURT_RESERVATIONS_URI)
     public ResponseEntity<List<ReservationDto>> getCourtReservations(@PathVariable int number) {
-        try {
-            var reservations = courtService.findReservations(number);
-            return ResponseEntity.ok().body(reservations);
-        } catch (NullPointerException e) {
-            return ResponseEntity.notFound().build();
-        }
+        var reservations = courtService.findReservations(number);
+        return ResponseEntity.ok().body(reservations);
     }
 }

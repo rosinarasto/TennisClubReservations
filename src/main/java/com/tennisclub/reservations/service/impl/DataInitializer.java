@@ -3,7 +3,8 @@ package com.tennisclub.reservations.service.impl;
 import com.tennisclub.reservations.dto.SurfaceDto;
 import com.tennisclub.reservations.dto.create.CourtCreateDto;
 import com.tennisclub.reservations.dto.create.SurfaceCreateDto;
-import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
+import com.tennisclub.reservations.repository.CourtRepository;
+import com.tennisclub.reservations.repository.SurfaceRepository;
 import com.tennisclub.reservations.service.CourtService;
 import com.tennisclub.reservations.service.SurfaceService;
 import jakarta.annotation.PostConstruct;
@@ -23,15 +24,21 @@ public class DataInitializer {
     private final CourtService courtService;
     private final SurfaceService surfaceService;
 
+    private final CourtRepository courtRepository;
+    private final SurfaceRepository surfaceRepository;
+
     private final List<SurfaceDto> surfaces = new ArrayList<>();
 
     @Value("${data.init.enabled:false}")
     private boolean dataInitEnabled;
 
     @Autowired
-    public DataInitializer(CourtService courtService, SurfaceService surfaceService) {
+    public DataInitializer(CourtService courtService, CourtRepository courtRepository,
+                           SurfaceService surfaceService, SurfaceRepository surfaceRepository) {
         this.courtService = courtService;
+        this.courtRepository = courtRepository;
         this.surfaceService = surfaceService;
+        this.surfaceRepository = surfaceRepository;
     }
 
     @PostConstruct
@@ -44,26 +51,20 @@ public class DataInitializer {
     }
 
     private void initSurfaces() {
-        try {
+        if (surfaceRepository.findByName("Hard").isEmpty())
             surfaces.add(surfaceService.create(new SurfaceCreateDto(BigDecimal.valueOf(0.24), "Hard")));
-        } catch (ResourceAlreadyExistsException ignored) {}
-        try {
+        if (surfaceRepository.findByName("Clay").isEmpty())
             surfaces.add(surfaceService.create(new SurfaceCreateDto(BigDecimal.valueOf(0.36), "Clay")));
-        } catch (ResourceAlreadyExistsException ignored) {}
     }
 
     private void initCourts() {
-        try {
+        if (courtRepository.findByCourtNumber(1).isEmpty())
             courtService.create(new CourtCreateDto("Emerald Bay Tennis Center", 1, surfaces.get(0)));
-        } catch (ResourceAlreadyExistsException ignored) {}
-        try {
+        if (courtRepository.findByCourtNumber(2).isEmpty())
             courtService.create(new CourtCreateDto("Riverside Racket Club", 2, surfaces.get(1)));
-        } catch (ResourceAlreadyExistsException ignored) {}
-        try {
+        if (courtRepository.findByCourtNumber(3).isEmpty())
             courtService.create(new CourtCreateDto("Sunset Point Tennis Courts", 3, surfaces.get(1)));
-        } catch (ResourceAlreadyExistsException ignored) {}
-        try {
+        if (courtRepository.findByCourtNumber(4).isEmpty())
             courtService.create(new CourtCreateDto("Grandview Athletic Park", 4, surfaces.get(0)));
-        } catch (ResourceAlreadyExistsException ignored) {}
     }
 }

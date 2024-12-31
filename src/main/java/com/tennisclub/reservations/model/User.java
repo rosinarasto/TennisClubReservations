@@ -1,11 +1,9 @@
 package com.tennisclub.reservations.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,8 +24,7 @@ public class User extends BaseEntity {
 
     private String password;
 
-    private String salt;
-
     @OneToMany(mappedBy = "user")
-    private List<Reservation> reservations;
+    @OrderBy("from")
+    private List<Reservation> reservations = new ArrayList<>();
 }

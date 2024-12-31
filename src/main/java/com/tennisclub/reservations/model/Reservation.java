@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Reservation extends BaseEntity {
 
+    @Column(name = "from_date")
     private LocalDateTime from;
 
+    @Column(name = "to_date")
     private LocalDateTime to;
 
     @Enumerated(value = EnumType.STRING)

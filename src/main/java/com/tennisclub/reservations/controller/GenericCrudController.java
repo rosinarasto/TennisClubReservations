@@ -17,41 +17,36 @@ public abstract class GenericCrudController<TDto, TCreateDto, TUpdateDto extends
         this.service = service;
     }
 
-    @PostMapping(ApiUris.CREATE_URI)
+    @PostMapping()
     public ResponseEntity<?> createEntity(@Valid @RequestBody TCreateDto createDto) {
         var response = service.create(createDto);
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping(ApiUris.UPDATE_URI)
+    @PutMapping()
     public ResponseEntity<TDto> updateEntity(@Valid @RequestBody TUpdateDto updateDto) {
         var response = service.update(updateDto);
-        return response.map(dto -> ResponseEntity.ok().body(dto)).orElseGet(() -> ResponseEntity.badRequest().build());
+        return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping(ApiUris.DELETE_ALL_URI)
+    @DeleteMapping()
     public ResponseEntity<Void> deleteAllEntities(Pageable pageable) {
         service.softDeleteAll(pageable);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(ApiUris.DELETE_URI)
-    public ResponseEntity<Void> deleteEntity(@PathVariable long id) {
+    @DeleteMapping(ApiUris.ID_URI)
+    public ResponseEntity<TDto> deleteEntity(@PathVariable long id) {
         var entity = service.softDeleteById(id);
-
-        if (entity.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return ResponseEntity.ok().build();
+        return entity.map(surfaceDto -> ResponseEntity.ok().body(surfaceDto)).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @GetMapping(ApiUris.GET_ALL_URI)
+    @GetMapping()
     public ResponseEntity<Page<TDto>> getAllEntities(Pageable pageable) {
         return ResponseEntity.ok().body(service.findAll(pageable));
     }
 
-    @GetMapping(ApiUris.GET_URI)
+    @GetMapping(ApiUris.ID_URI)
     public ResponseEntity<TDto> getEntity(@PathVariable long id) {
         var entity = service.findById(id);
         return entity.map(surfaceDto -> ResponseEntity.ok().body(surfaceDto)).orElseGet(() -> ResponseEntity.badRequest().build());

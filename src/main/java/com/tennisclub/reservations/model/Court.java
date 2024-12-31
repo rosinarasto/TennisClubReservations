@@ -3,6 +3,7 @@ package com.tennisclub.reservations.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Court extends BaseEntity {
 
     @OneToMany(mappedBy = "court")
     @OrderBy("creationDate")
-    private List<Reservation> reservations;
+    private List<Reservation> reservations = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "surface_id")

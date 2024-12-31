@@ -27,7 +27,7 @@ public interface CrudService<TDto, TCreateDto, TUpdateDto> {
      *
      * @return optional with updated entity, or empty optional if entity was not found
      */
-    Optional<TDto> update(TUpdateDto entity);
+    TDto update(TUpdateDto entity);
 
     /**
      * Find entity with given {@code id}.

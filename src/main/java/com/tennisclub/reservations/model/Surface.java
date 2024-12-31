@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,5 +26,5 @@ public class Surface extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "surface")
-    private List<Court> courts;
+    private List<Court> courts = new ArrayList<>();
 }

@@ -1,7 +1,6 @@
 package com.tennisclub.reservations.validator;
 
 import com.tennisclub.reservations.dto.CourtDto;
-import com.tennisclub.reservations.repository.CourtRepository;
 import com.tennisclub.reservations.service.ReservationService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -21,12 +20,9 @@ public class AvailableDateValidator implements ConstraintValidator<AvailableDate
 
     private final ReservationService reservationService;
 
-    private final CourtRepository courtRepository;
-
     @Autowired
-    public AvailableDateValidator(ReservationService reservationService, CourtRepository courtRepository) {
+    public AvailableDateValidator(ReservationService reservationService) {
         this.reservationService = reservationService;
-        this.courtRepository = courtRepository;
     }
 
     @Override
@@ -52,9 +48,6 @@ public class AvailableDateValidator implements ConstraintValidator<AvailableDate
             return false;
         }
 
-        var court = courtRepository.findByCourtNumber(courtDto.getNumber());
-
-        return court.filter(court1 -> reservationService.isDateAvailable(court1, from, to)).isPresent();
-
+        return reservationService.isDateAvailable(courtDto.getNumber(), from, to);
     }
 }

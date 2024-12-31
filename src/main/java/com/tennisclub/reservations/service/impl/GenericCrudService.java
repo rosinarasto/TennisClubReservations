@@ -1,5 +1,6 @@
 package com.tennisclub.reservations.service.impl;
 
+import com.tennisclub.reservations.exception.NotFoundException;
 import com.tennisclub.reservations.mapper.GenericMapper;
 import com.tennisclub.reservations.model.BaseEntity;
 import com.tennisclub.reservations.repository.CrudRepository;
@@ -40,15 +41,15 @@ public abstract class GenericCrudService<TModel extends BaseEntity, TDto, TCreat
     }
 
     @Override
-    public Optional<TDto> update(TUpdateDto updateEntity) {
+    public TDto update(TUpdateDto updateEntity) {
         log.info("Updating entity: {}", updateEntity);
 
         var entity = mapper.toEntityFromUpdateDto(updateEntity);
 
         if (findById(entity.getId()).isPresent())
-            return Optional.ofNullable(mapper.toDto(repository.update(entity)));
+            return mapper.toDto(repository.update(entity));
 
-        return Optional.empty();
+        throw new NotFoundException("Entity " +updateEntity + " not found");
     }
 
     @Override

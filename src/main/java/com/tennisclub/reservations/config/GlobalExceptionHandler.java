@@ -1,5 +1,6 @@
 package com.tennisclub.reservations.config;
 
+import com.tennisclub.reservations.exception.NotFoundException;
 import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException ex) {
         return ResponseEntity.badRequest().body("Validation error: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

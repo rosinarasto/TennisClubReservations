@@ -3,6 +3,7 @@ package com.tennisclub.reservations.service.impl;
 import com.tennisclub.reservations.dto.ReservationDto;
 import com.tennisclub.reservations.dto.UserDto;
 import com.tennisclub.reservations.dto.create.UserCreateDto;
+import com.tennisclub.reservations.exception.NotFoundException;
 import com.tennisclub.reservations.exception.ResourceAlreadyExistsException;
 import com.tennisclub.reservations.mapper.ReservationMapper;
 import com.tennisclub.reservations.mapper.UserMapper;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -65,16 +65,16 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
     }
 
     @Override
-    public Optional<UserDto> update(UserDto updateUser) {
+    public UserDto update(UserDto updateUser) {
         log.info("Updating User: {}", updateUser);
 
         var user = userMapper.toEntityFromUpdateDto(updateUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (findById(user.getId()).isPresent())
-            return Optional.ofNullable(userMapper.toDto(userRepository.update(user)));
+            return userMapper.toDto(userRepository.update(user));
 
-        return Optional.empty();
+        throw new NotFoundException("User " + updateUser + "not found");
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UserServiceImpl extends GenericCrudService<User, UserDto, UserCreat
         return user.map(value ->
                         value.getReservations().stream()
                             .map(reservationMapper::toDto)
-                                .filter(res -> future && res.getFrom().isAfter(LocalDateTime.now()))
+                                .filter(res -> !future || res.getFrom().isAfter(LocalDateTime.now()))
                                 .toList())
                     .orElse(Collections.emptyList());
     }

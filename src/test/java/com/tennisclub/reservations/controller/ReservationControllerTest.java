@@ -1,9 +1,7 @@
 package com.tennisclub.reservations.controller;
 
 import com.tennisclub.reservations.model.factory.ReservationFactory;
-import com.tennisclub.reservations.model.factory.SurfaceFactory;
 import com.tennisclub.reservations.service.ReservationService;
-import com.tennisclub.reservations.util.PriceCalculationUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

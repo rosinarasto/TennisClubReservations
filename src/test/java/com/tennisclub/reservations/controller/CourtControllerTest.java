@@ -1,6 +1,5 @@
 package com.tennisclub.reservations.controller;
 
-import com.tennisclub.reservations.model.factory.CourtFactory;
 import com.tennisclub.reservations.model.factory.ReservationFactory;
 import com.tennisclub.reservations.service.CourtService;
 import org.junit.jupiter.api.Test;

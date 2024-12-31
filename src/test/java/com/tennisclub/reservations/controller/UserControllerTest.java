@@ -1,8 +1,6 @@
 package com.tennisclub.reservations.controller;
 
-import com.tennisclub.reservations.model.factory.CourtFactory;
 import com.tennisclub.reservations.model.factory.ReservationFactory;
-import com.tennisclub.reservations.model.factory.UserFactory;
 import com.tennisclub.reservations.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

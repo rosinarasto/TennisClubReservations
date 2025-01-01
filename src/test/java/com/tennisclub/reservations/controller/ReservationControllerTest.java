@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static com.tennisclub.reservations.TestUtils.convertToJson;
@@ -36,11 +37,16 @@ public class ReservationControllerTest {
         when(reservationService.create(createDto))
                 .thenReturn(reservationDto);
 
+        when(reservationService.isDateAvailable(reservationDto.getCourt().getNumber(), reservationDto.getFrom(), reservationDto.getTo()))
+                .thenReturn(true);
+
+        var expected = BigDecimal.valueOf(126.0);
+
         mockMvc.perform(post("/api/reservation")
                         .content(convertToJson(createDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(13.22));
+                .andExpect(jsonPath("$").value(expected.toString()));
     }
 
     private LocalDateTime getTime(int hour, int minute) {
